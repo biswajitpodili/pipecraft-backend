@@ -254,21 +254,20 @@ const generateRefreshAuthToken = asyncHandler(async (req, res) => {
 
     const refreshTokenOptions = {
       httpOnly: true,
-      secure: true, // required for SameSite=None
-      sameSite: "none", // needed for cross-site cookies
-      maxAge: 10 * 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
       path: "/",
     };
 
     // Cookie options for access token (15 minutes)
     const accessTokenOptions = {
       httpOnly: true,
-      secure: true, // required for SameSite=None
-      sameSite: "none", // needed for cross-site cookies
-      maxAge: 1 * 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
       path: "/",
     };
-
     res
       .status(200)
       .cookie("accessToken", accessToken, accessTokenOptions)
