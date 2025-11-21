@@ -14,7 +14,7 @@ import commonRouters from "./routes/common.routes.js";
 const app = express();
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "https://pipecraft.biswajitpodili.dev/",
+    origin: process.env.CLIENT_URL || "https://pipecraft.biswajitpodili.dev",
     credentials: true,
   })
 );
