@@ -2,10 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { dynamoDB } from "../db/index.js";
-import {
-  uploadFileToS3,
-  deleteFileFromS3,
-} from "../utils/fileUploadToS3.js";
+import { uploadFileToS3, deleteFileFromS3 } from "../utils/fileUploadToS3.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import UserModalSchema from "../models/user.modal.js";
@@ -255,18 +252,20 @@ const generateRefreshAuthToken = asyncHandler(async (req, res) => {
       { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
     );
 
-    const accessTokenOptions = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Set to false for local development (HTTP)
-      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Use 'lax' for local development
-      maxAge: 1 * 24 * 60 * 60 * 1000,
-      path: "/",
-    };
     const refreshTokenOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Set to false for local development (HTTP)
-      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Use 'lax' for local development
+      secure: true, // required for SameSite=None
+      sameSite: "none", // needed for cross-site cookies
       maxAge: 10 * 24 * 60 * 60 * 1000,
+      path: "/",
+    };
+
+    // Cookie options for access token (15 minutes)
+    const accessTokenOptions = {
+      httpOnly: true,
+      secure: true, // required for SameSite=None
+      sameSite: "none", // needed for cross-site cookies
+      maxAge: 1 * 24 * 60 * 60 * 1000,
       path: "/",
     };
 
@@ -446,12 +445,10 @@ const deleteUser = asyncHandler(async (req, res) => {
   if (req.user.userId === userId) {
     const accessTokenOptions = {
       httpOnly: true,
-     
     };
 
     const refreshTokenOptions = {
       httpOnly: true,
-      
     };
 
     res
