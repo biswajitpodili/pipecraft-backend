@@ -105,16 +105,16 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const accessTokenOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // Set to false for local development (HTTP)
-    sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Use 'lax' for local development
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     maxAge: 1 * 24 * 60 * 60 * 1000,
     path: "/",
   };
 
   const refreshTokenOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // Set to false for local development (HTTP)
-    sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Use 'lax' for local development
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     maxAge: 10 * 24 * 60 * 60 * 1000,
     path: "/",
   };
@@ -160,16 +160,16 @@ const logoutUser = asyncHandler(async (req, res) => {
 
   const refreshTokenOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // Set to false for local development (HTTP)
-    sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Use 'lax' for local development
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     maxAge: 10 * 24 * 60 * 60 * 1000,
     path: "/",
   };
 
   const accessTokenOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // Set to false for local development (HTTP)
-    sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Use 'lax' for local development
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     maxAge: 1 * 24 * 60 * 60 * 1000,
     path: "/",
   };
